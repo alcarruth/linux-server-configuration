@@ -1,0 +1,20 @@
+
+installed by apt-get install:
+ - apache2
+ - apache2-utils
+ - libapache2-mod-wsgi
+ - git
+ - postgresql
+ - emacs
+ - emacs-goodies-el 
+ - finger
+ - python-pip
+
+installed by pip install:
+ - dict2xml
+ - SQLAlchemy
+ - Flask
+ - flask-seasurf
+ - Werkzeug
+ - oauth2client
+ - psycopg2

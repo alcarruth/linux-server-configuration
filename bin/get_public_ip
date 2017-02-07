@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# hat tip:
+# https://www.google.com/search?q=what%27s+my+external+ip+address#q=get+external+ip+linux
+# how cool is it that you can find the answer to just about _anything_
+# by googling it !
+
+function get_public_ip() {
+    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+}
+
+function get_public_host() {
+    get_public_ip ;
+    public_host=$(host -t ptr $public_ip | sed 's/.*\ \(.*\)\./\1/')
+}
+
+CMD=$(echo "$0" | sed 's/.*\///')
+
+if [ "${CMD}" != "get_public_host" ]; then
+    get_public_ip ;
+    printf "${public_ip}\n" ;
+else
+    get_public_ip ;
+    get_public_host ;
+    printf "${public_host}\n" ;
+fi
+
+
+
+
