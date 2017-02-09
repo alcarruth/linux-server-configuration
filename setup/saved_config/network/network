@@ -1,0 +1,9 @@
+  /opt/git/udacity-project/setup/network:
+  total used in directory 48 available 6019176
+  drwxrwxr-x 2 carruth carruth 4096 Feb  8 00:23 .
+  drwxrwxr-x 8 carruth carruth 4096 Feb  8 00:23 ..
+  -rw-r--r-- 1 carruth carruth   49 Feb  7 18:24 hostname
+  -rw-rw-r-- 1 carruth carruth  280 Feb  7 20:44 setup_ufw1.sh
+  -rw-rw-r-- 1 carruth carruth  387 Feb  7 18:37 ssh_authorized_keys
+  -rw-r--r-- 1 carruth carruth 2587 Feb  7 18:24 sshd_config
+  -rw-r--r-- 1 root    root     408 Feb  7 18:25 ufw_status

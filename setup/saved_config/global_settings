@@ -1,0 +1,12 @@
+#!/bin/bash
+# settings
+
+export SSH_PORT="2200"
+#export GRADER="grader"
+#export STUDENT="carruth"
+export GRADER="grader2"
+export STUDENT="geruf"
+export DB_OWNER=$STUDENT
+export DB_USER="catalog2"
+export DB_PROJECT="udacity"
+export UDACITY_KEY=$(<udacity_key)

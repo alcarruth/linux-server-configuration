@@ -1,9 +1,10 @@
 
-ufw deny all
+ufw default deny incoming
+ufw default allow outgoing
 ufw add ssh
+ufw add 2200/tcp
 ufw add ntp
 ufw add http
-ufw add 2200/tcp
 ufw enable
 
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.old
