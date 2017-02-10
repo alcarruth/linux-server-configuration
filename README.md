@@ -1,5 +1,14 @@
 # Udacity FSND Project 5 LinuxServer Configuration
 
+## Users
+
+```
+grader:x:1000:1000:udacity grader,,,:/home/grader:/bin/bash
+carruth:x:1001:1001:Al Carruth,,,:/home/carruth:/bin/bash
+postgres:x:106:112:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
+```
+
 ## Security
 
 ### /etc/sudoers:
