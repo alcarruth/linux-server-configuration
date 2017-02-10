@@ -4,7 +4,7 @@
 
 ### /etc/sudoers:
 ```
-   \#includedir /etc/sudoers.d
+   #includedir /etc/sudoers.d
 ```
 ### /etc/sudoers.d:
 ```
@@ -20,8 +20,6 @@
    AllowUsers carruth grader
 ```
 
-### TODO: Do users have good/secure passwords? 
-
 ### ufw status:
 ```
    Status: active
@@ -36,19 +34,22 @@
    80 (v6)                    ALLOW       Anywhere (v6)
 ```
 
+### TODO: Do users have good/secure passwords? 
+
+
 ## Public IP Address and Hostname
+
+### get_public_host(): 
+```
+   ec2-52-33-68-114.us-west-2.compute.amazonaws.com
+```
 
 ### /etc/hostname: 
 ```
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
 
-### HOSTNAME: 
-```
-   ec2-52-33-68-114.us-west-2.compute.amazonaws.com
-```
-
-### get_public_host(): 
+### ${HOSTNAME}: 
 ```
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
