@@ -15,8 +15,12 @@ function todo() {
 
 
 function section() {
-    printf "\n\n\n#--------------------------------------------------------------------------------------"
-    printf "\n# ${1}\n\n"
+    printf "### ${1}\n\n"
+}
+
+
+function heading() {
+    printf "#### ${1}\n\n"
 }
 
 
@@ -26,30 +30,44 @@ function indent() {
 
 
 function print_config() {
+    printf '```\n'
     sudo sh -c "${1} ${2}" | grep -v '^#' | grep --color=never [a-z] | indent "${3}"
+    printf '```\n'
     printf "\n\n"
 }
 
 
-function heading() {
-    printf "\n\n\n# ${1}\n\n"
-}
-
-
 function psql_command() {
+    printf '```\n'
     sudo -u ${1} psql tickets -c "${2}"  | indent "${3}"
+    printf '```\n'
 }
 
 #-------------------------------------------------------------------------------------------------#
-# User Management
-# ----------------
+# Users
+#----------
+
+function test_user_accounts() {
+    section User Accounts
+    printf '```\n'
+    sudo grep 'grader\|carruth\|catalog\|postgres' /etc/passwd
+    printf '```\n'
+}
+
+#-------------------------------------------------------------------------------------------------#
+# Security
+#----------
+
+# Is the firewall configured to only allow for 
+# SSH (port 2200), HTTP (port 80) and NTP (port 123)?
 
 # Are users prompted for their password at least once when using sudo commands?
 function test_sudoers() {
-
-    section 'Super User Access';
+    section "Security"
     heading "/etc/sudoers:"
+    printf '```\n'
     sudo grep includedir /etc/sudoers | indent '   '
+    printf '```\n'
     # hat tip:
     # http://unix.stackexchange.com/questions/227070/why-does-a-z-match-lowercase-letters-in-bash
     LC_COLLATE=C;
@@ -57,46 +75,36 @@ function test_sudoers() {
     print_config 'cat' "/etc/sudoers.d/[a-z]*" '   '
 }
 
-#-------------------------------------------------------------------------------------------------#
-# Secure Shell
-#--------------
-
 function test_sshd() {
-
-    section "Secure Shell";
     heading '/etc/ssh/sshd_config:'
+    printf '```\n'
     sudo grep --color=never '^Port' /etc/ssh/sshd_config | indent '   ';
     sudo grep --color=never '^PermitRootLogin' /etc/ssh/sshd_config | indent '   ';
     sudo grep --color=never '^RSAAuthentication' /etc/ssh/sshd_config | indent '   ';
     sudo grep --color=never '^AllowUsers' /etc/ssh/sshd_config | indent '   ';
+    printf '```\n'
+}
 
+function test_ufw_status() {
+    heading 'ufw status:'
+    print_config ufw status '   ';
+}
+
+function test_passwords() {
     # Do users have good/secure passwords?
     todo "Do users have good/secure passwords?"
 }
 
 
 #-------------------------------------------------------------------------------------------------#
-# Security
-# ---------
-
-# Is the firewall configured to only allow for 
-# SSH (port 2200), HTTP (port 80) and NTP (port 123)?
-
-function test_ufw_status() {
-
-    section 'Firewall'
-    heading 'ufw status:'
-    print_config ufw status '   ';
-}
-
-#-------------------------------------------------------------------------------------------------#
 # Applications up-to-date?
 #--------------------------
 
 function test_applications_up_to_date() {
-    section 'Applications up-to-date?'
-    heading 'apt-get upgrade'
+    section 'Applications up-to-date'
+    heading 'apt-get update > /dev/null'
     sudo apt-get update > /dev/null;
+    heading 'apt-get upgrade'
     print_config apt-get upgrade '   ';
 }
 
@@ -110,12 +118,13 @@ function get_apache2_host() {
 
 function test_hostname() {
 
-    section "testing public ip and hostname"
-
+    section "Public IP and Hostname"
+    printf '```\n'
     printf "/etc/hostname: \n$(cat /etc/hostname)\n\n" | indent '   ';
     printf "HOSTNAME: \n${HOSTNAME}\n\n" | indent '   ';
     printf "get_public_host(): \n$(./get_public_host)\n\n" | indent '   ';
     printf "apache2 ServerName: \n$(get_apache2_host)\n\n" | indent '   ';
+    printf '```\n'
 }
 
 #-------------------------------------------------------------------------------------------------#
@@ -171,10 +180,11 @@ function test_apache2_wsgi() {
 #-------------------------------------------------------------------------------------------------#
 
 function test_all() {
+    test_user_accounts;
     test_sudoers;
     test_sshd;
     test_ufw_status;
-    #test_applications_up_to_date;
+    test_applications_up_to_date;
     test_hostname;
     test_postgresql_config;
     test_apache2_wsgi;
