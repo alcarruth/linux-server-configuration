@@ -1,6 +1,6 @@
 # Udacity FSND Project 5 LinuxServer Configuration
 
-## Super User Access
+## Security
 
 ### /etc/sudoers:
 ```
@@ -12,9 +12,7 @@
    grader ALL=(ALL:ALL) ALL
 ```
 
-### Secure Shell
-
-#### /etc/ssh/sshd_config:
+### /etc/ssh/sshd_config:
 ```
    Port 2200
    PermitRootLogin no
@@ -22,11 +20,9 @@
    AllowUsers carruth grader
 ```
 
-#### TODO: Do users have good/secure passwords? 
+### TODO: Do users have good/secure passwords? 
 
-### Firewall
-
-#### ufw status:
+### ufw status:
 ```
    Status: active
    To                         Action      From
@@ -40,30 +36,31 @@
    80 (v6)                    ALLOW       Anywhere (v6)
 ```
 
-### testing public ip and hostname
+## Public IP Address and Hostname
+
+### /etc/hostname: 
 ```
-   /etc/hostname: 
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
 
+### HOSTNAME: 
 ```
-   HOSTNAME: 
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
 
+### get_public_host(): 
 ```
-   get_public_host(): 
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
 
+### Apache2 Server Name: 
 ```
-   apache2 ServerName: 
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 ```
 
-### PostgreSQL Configuration
+## PostgreSQL Configuration
 
-#### /etc/postgresql/9.3/main//pg_hba.conf:
+### /etc/postgresql/9.3/main//pg_hba.conf:
 ```
    local   all             postgres                                peer
    local   all             all                                     peer map=ticket-app
@@ -71,13 +68,13 @@
    host    all             all             ::1/128                 md5
 ```
 
-#### /etc/postgresql/9.3/main//pg_ident.conf:
+### /etc/postgresql/9.3/main//pg_ident.conf:
 ```
    ticket-app      catalog                 catalog
    ticket-app      carruth                 carruth
 ```
 
-#### sudo -u catalog psql tickets -c '\dp'
+### sudo -u catalog psql tickets -c '\dp'
 ```
                                          Access privileges
     Schema |        Name        |   Type   |    Access privileges    | Column access privileges 
@@ -107,7 +104,7 @@
    (11 rows)
 ```
 
-#### sudo -u catalog psql tickets -c "select * from conference;"
+### sudo -u catalog psql tickets -c "select * from conference;"
 ```
      abbrev_name  |             name             |               logo               
    ---------------+------------------------------+----------------------------------
@@ -125,14 +122,14 @@
 
 ```
 
-### Apache2 Configuration
+## Apache2 Configuration
 
-#### symlinks in /etc/apache2/sites-enabled
+### symlinks in /etc/apache2/sites-enabled
 ```
    000-udacity-project.conf -> ../sites-available/000-udacity-project.conf
 ```
 
-#### /etc/apache2/sites-available/000-udacity-project.conf
+### /etc/apache2/sites-available/000-udacity-project.conf
 ```
    <If "%{HTTP_HOST} != 'ec2-52-33-68-114.us-west-2.compute.amazonaws.com'">
        Redirect "/" "http://ec2-52-33-68-114.us-west-2.compute.amazonaws.com/"
@@ -150,7 +147,8 @@
        Include /etc/apache2/sites-available/random-names.conf
    </VirtualHost>
 ```
-#### /etc/apache2/sites-available/random-names.conf
+
+### /etc/apache2/sites-available/random-names.conf
 ```
       WSGIDaemonProcess random-names user=catalog group=catalog threads=1
       WSGIScriptAlias /random-names /var/www/html/random-names/app.wsgi
@@ -169,7 +167,8 @@
           Allow from all
       </Directory>
 ```
-#### /etc/apache2/sites-available/tickets-r-us.conf
+
+### /etc/apache2/sites-available/tickets-r-us.conf
 ```
        WSGIDaemonProcess tickets user=carruth group=carruth threads=1
        WSGIScriptAlias /tickets /var/www/html/tickets/tickets.wsgi
