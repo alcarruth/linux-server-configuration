@@ -1,24 +1,34 @@
+
+
 ### User
 
 ```
-grader:x:1000:1000:udacity grader,,,:/home/grader:/bin/bash
-carruth:x:1001:1001:Al Carruth,,,:/home/carruth:/bin/bash
-postgres:x:106:112:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
-catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
+   grader:x:1000:1000:udacity grader,,,:/home/grader:/bin/bash
+   carruth:x:1001:1001:Al Carruth,,,:/home/carruth:/bin/bash
+   postgres:x:106:112:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
+   catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
 ```
+
+
 ### Security
+
+
 
 #### /etc/sudoers:
 
 ```
    #includedir /etc/sudoers.d
 ```
+
+
 #### /etc/sudoers.d:
 
 ```
    carruth ALL=(ALL:ALL) ALL
    grader ALL=(ALL:ALL) ALL
 ```
+
+
 
 
 #### /etc/ssh/sshd_config:
@@ -29,6 +39,8 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
    RSAAuthentication yes
    AllowUsers carruth grader
 ```
+
+
 #### ufw status:
 
 ```
@@ -45,9 +57,19 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
 ```
 
 
+
+
+#### TODO: Do users have good/secure passwords?
+
+
+
 ### Applications up-to-date
 
+
+
 #### apt-get update > /dev/null
+
+
 
 #### apt-get upgrade
 
@@ -60,6 +82,8 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
      linux-virtual
    0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
 ```
+
+
 
 
 ### Public IP and Hostname
@@ -78,9 +102,13 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
    ec2-52-33-68-114.us-west-2.compute.amazonaws.com
 
 ```
+
+
 ### PostgreSQL Configuration
 
-#### /etc/postgresql/9.3/main//pg_hba.conf:
+
+
+#### /etc/postgresql/9.3/main/pg_hba.conf:
 
 ```
    local   all             postgres                                peer
@@ -90,12 +118,16 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
 ```
 
 
-#### /etc/postgresql/9.3/main//pg_ident.conf:
+
+
+#### /etc/postgresql/9.3/main/pg_ident.conf:
 
 ```
    ticket-app      catalog                 catalog
    ticket-app      carruth                 carruth
 ```
+
+
 
 
 #### sudo -u catalog psql tickets -c '\dp'
@@ -129,6 +161,8 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
    (11 rows)
 
 ```
+
+
 #### sudo -u catalog psql tickets -c "select * from conference;"
 
 ```
@@ -151,10 +185,15 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
 
 ### Apache2 Configuration
 
+
+
 #### symlinks in /etc/apache2/sites-enabled
 
+```
 
    000-udacity-project.conf -> ../sites-available/000-udacity-project.conf
+```
+
 
 #### /etc/apache2/sites-available/000-udacity-project.conf
 
@@ -178,6 +217,8 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
 ```
 
 
+
+
 #### /etc/apache2/sites-available/random-names.conf
 
 
@@ -199,6 +240,8 @@ catalog:x:1002:1002:catalog,,,:/home/catalog:/usr/sbin/nologin
           Allow from all
       </Directory>
 ```
+
+
 
 
 #### /etc/apache2/sites-available/tickets-r-us.conf

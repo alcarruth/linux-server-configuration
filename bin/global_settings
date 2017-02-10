@@ -17,7 +17,7 @@ export RANDOM_NAMES_WSGI_CONF='/etc/apache2/sites-available/random-names.conf'
 export TICKETS_WSGI_CONF='/etc/apache2/sites-available/tickets-r-us.conf'
 
 # PostgreSQL environment
-export POSTGRESQL_CONF_DIR="/etc/postgresql/9.3/main/"
+export POSTGRESQL_CONF_DIR="/etc/postgresql/9.3/main"
 export PG_HBA_CONF="pg_hba.conf"
 export PG_IDENT_CONF="pg_ident.conf"
 export DB_OWNER=$STUDENT

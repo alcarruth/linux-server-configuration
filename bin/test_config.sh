@@ -10,17 +10,17 @@
 
 
 function todo() {
-    printf "\n\n ******* TODO: ${1} *******\n\n"
+    printf " ******* TODO: ${1} *******\n\n"
 }
 
 
 function section() {
-    printf "### ${1}\n\n"
+    printf "\n\n### ${1}\n\n"
 }
 
 
 function heading() {
-    printf "#### ${1}\n\n"
+    printf "\n\n#### ${1}\n\n"
 }
 
 
@@ -50,7 +50,7 @@ function psql_command() {
 function test_user_accounts() {
     section User Accounts
     printf '```\n'
-    sudo grep 'grader\|carruth\|catalog\|postgres' /etc/passwd
+    grep 'grader\|carruth\|catalog\|postgres' /etc/passwd | indent '   '
     printf '```\n'
 }
 
@@ -63,7 +63,6 @@ function test_user_accounts() {
 
 # Are users prompted for their password at least once when using sudo commands?
 function test_sudoers() {
-    section "Security"
     heading "/etc/sudoers:"
     printf '```\n'
     sudo grep includedir /etc/sudoers | indent '   '
@@ -75,7 +74,7 @@ function test_sudoers() {
     print_config 'cat' "/etc/sudoers.d/[a-z]*" '   '
 }
 
-function test_sshd() {
+function test_sshd_config() {
     heading '/etc/ssh/sshd_config:'
     printf '```\n'
     sudo grep --color=never '^Port' /etc/ssh/sshd_config | indent '   ';
@@ -92,9 +91,16 @@ function test_ufw_status() {
 
 function test_passwords() {
     # Do users have good/secure passwords?
-    todo "Do users have good/secure passwords?"
+    heading "TODO: Do users have good/secure passwords?"
 }
 
+function test_security() {
+    section "Security"
+    test_sudoers
+    test_sshd_config
+    test_ufw_status
+    test_passwords
+}
 
 #-------------------------------------------------------------------------------------------------#
 # Applications up-to-date?
@@ -136,19 +142,16 @@ function test_postgresql_config() {
     section "PostgreSQL Configuration"
 
     heading "${POSTGRESQL_CONF_DIR}/${PG_HBA_CONF}:"
-    #sudo sh -c "cat ${POSTGRESQL_CONF_DIR}/${PG_HBA_CONF}" | grep -v '^#' | grep --color=never [a-z]
-    print_config cat "${POSTGRESQL_CONF_DIR}/${PG_HBA_CONF}" '   '
+    print_config cat "${POSTGRESQL_CONF_DIR}/${PG_HBA_CONF}" '   ';
 
     heading "${POSTGRESQL_CONF_DIR}/${PG_IDENT_CONF}:"
-    #sudo sh -c "cat ${POSTGRESQL_CONF_DIR}/${PG_IDENT_CONF}" | grep -v '^#' | grep --color=never [a-z]
-    print_config cat "${POSTGRESQL_CONF_DIR}/${PG_IDENT_CONF}" '   '
+    print_config cat "${POSTGRESQL_CONF_DIR}/${PG_IDENT_CONF}" '   ';
 
     heading "sudo -u catalog psql tickets -c '\dp'"
     psql_command catalog '\dp' '   ';
 
     heading 'sudo -u catalog psql tickets -c "select * from conference;"'
     psql_command catalog 'select * from conference;' '   ';
-    printf "\n\n"
 }
 
 
@@ -164,8 +167,9 @@ function test_apache2_wsgi() {
     section "Apache2 Configuration"
 
     heading "symlinks in ${APACHE2_CONF_DIR}"
+    printf '```\n'
     ls -l ${APACHE2_CONF_DIR} | cut -d ' ' --fields='10 11 12' | indent '   '
-    printf "\n"
+    printf '```\n'
 
     heading "${APACHE2_CONF}\n"
     print_config cat ${APACHE2_CONF} '   '
@@ -181,25 +185,25 @@ function test_apache2_wsgi() {
 
 function test_all() {
     test_user_accounts;
-    test_sudoers;
-    test_sshd;
-    test_ufw_status;
+    test_security;
     test_applications_up_to_date;
     test_hostname;
     test_postgresql_config;
     test_apache2_wsgi;
 }
 
-export test_sudoers;
-export test_root_login;
-export test_ufw_status;
-export test_applications_up_to_date;
-export test_sshd_port;
-export test_hostname;
-export test_postgresql_config;
-export test_apache2_tickets_wsgi;
+export test_user_accounts
+export test_security
+export test_sudoers
+export test_sshd_config
+export test_ufw_status
+export test_passwords
+export test_applications_up_to_date
+export test_hostname
+export test_postgresql_config
+export test_apache2_tickets_wsgi
 
-export test_all;
+export test_all
 
-test_all;
+test_all
 #test_apache2_wsgi;
