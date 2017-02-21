@@ -11,6 +11,8 @@ apt-get install postgresql
 apt-get install emacs
 apt-get install emacs-goodies-el 
 apt-get install finger
+apt-get install python-psycopg2
+apt-get install python-requests
 apt-get install python-pip
 
 pip install dict2xml
@@ -19,4 +21,3 @@ pip install Flask
 pip install flask-seasurf
 pip install Werkzeug
 pip install oauth2client
-pip install psycopg2

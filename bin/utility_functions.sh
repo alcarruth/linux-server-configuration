@@ -8,14 +8,18 @@ function add_users() {
     adduser --disabled-password $DB_OWNER
     adduser --no-create-home --disabled-login $DB_USER
 
-    mkdir /home/$STUDENT/.ssh
-    mkdir /home/$GRADER/.ssh
-
-    echo $UDACITY_KEY >> /home/$STUDENT/.ssh/authorized_keys
-    echo $UDACITY_KEY >> /home/$GRADER/.ssh/authorized_keys
-
     echo "$GRADER ALL=(ALL:ALL) ALL" > /etc/sudoers.d/$GRADER
     echo "$STUDENT ALL=(ALL:ALL) ALL" > /etc/sudoers.d/$STUDENT
+}
+
+function create_user_keys() {
+    for USER in $STUDENT $GRADER ; do
+        SSH_DIR="/home/${USER}/.ssh"
+        mkdir -m 700 ${SSH_DIR} 2> /dev/null
+        sudo -u ${USER} ssh-keygen -N '' -f ${SSH_DIR}/${USER}_key_rsa
+        cat ${SSH_DIR}/${USER}_key_rsa.pub >> ${SSH_DIR}/authorized_keys
+        chmod 600 ${SSH_DIR}/authorized_keys
+    done;
 }
 
 function del_users() {
@@ -62,29 +66,6 @@ function ufw_pass2() {
     ufw enable
 }
 
-function install_apps() {
-    apt-get update
-    apt-get upgrade
-
-    apt-get install apache2
-    apt-get install apache2-utils
-    apt-get install libapache2-mod-wsgi
-    apt-get install git
-    apt-get install postgresql
-    apt-get install emacs
-    apt-get install emacs-goodies-el 
-    apt-get install finger
-    apt-get install python-pip
-
-    pip install dict2xml
-    pip install SQLAlchemy
-    pip install Flask
-    pip install flask-seasurf
-    pip install Werkzeug
-    pip install oauth2client
-    pip install psycopg2
-}
-
 function clone_repositories() {
     mkdir -P /opt/git
     chown $STUDENT:$STUDENT /opt/git
@@ -95,10 +76,20 @@ function clone_repositories() {
 }
 
 function config_postgresql() {
-    PG_DIR='/etc/postgresql/9.3/main/'
+    PG_DIR=${POSTGRESQL_CONF_DIR}
     sed -i "s/\(^local\ *all\ *all\ *peer\).*/\1 map=$DB_PROJECT/g" $PG_DIR/pg_hba.conf
     printf "%-16s%-24s%s\n" $DB_PROJECT $DB_USER $DB_USER >> $PG_DIR/pg_ident.conf
     printf "%-16s%-24s%s\n" $DB_PROJECT $DB_OWNER $DB_OWNER >> $PG_DIR/pg_ident.conf
+
+    sudo -u postgres psql -c 'create user carruth createrole createdb;'
+    sudo -u postgres psql -c 'create database carruth;'
+    sudo -u postgres psql -c 'create user catalog;'
+
+    # TODO:
+    # This db configuration should be integrated with the reset_db.sh and
+    # set_permissions.sh scripts in the app directory.
+    
+    service postgresql restart
 }
 
 function config_apache2() {
@@ -112,6 +103,10 @@ function config_apache2() {
     sed -i "s,__HOST__,${HOST},g" 000-udacity-project.conf
     sed -i "s,__DOCUMENT_ROOT__,${DOCUMENT_ROOT},g" 000-udacity-project.conf
 
+
+    # TODO: enable the expires module
+    ln -s ../mods-available/expires.load /etc/apache2/mods-enabled
+    
     APP_NAME='tickets-r-us'
     APP_OWNER=${STUDENT}
     APP_GROUP=${STUDENT}
@@ -141,6 +136,8 @@ function install_apps() {
     apt-get install emacs
     apt-get install emacs-goodies-el 
     apt-get install finger
+    apt-get install python-requests
+    apt-get install python-psycopg2
     apt-get install python-pip
     
     pip install dict2xml
@@ -149,7 +146,6 @@ function install_apps() {
     pip install flask-seasurf
     pip install Werkzeug
     pip install oauth2client
-    pip install psycopg2
 }
 
 export add_user
@@ -163,7 +159,5 @@ export clone_repositories
 export config_postgresql
 export config_apache2
 export install_apps
-   
 
-#printf "\n\nNow log out and ssh back in\n\n"
 
