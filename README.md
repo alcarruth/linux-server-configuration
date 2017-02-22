@@ -13,13 +13,13 @@ Also, in order to sudo you'll need a password and I'll provide this as well.
  - ip_addr: 34.200.104.130
  - ssh port: 2200
 
-## Accessing the Web Application(s)
+## Accessing the Web Applications Site
 
 This project includes two WSGI apps and an index.html "landing page" which
 contains links to each of the WSGI apps.
 
  - [Tickets-R-Us](https://github.com/alcarruth/fullstack-p3-item-catalog)
-   is the FSND item catalog app.
+   is the FSND item catalog app
  - [Random Name Generator](https://github.com/alcarruth/random-names)
    is a toy program to demonstrate second WSGI capability.
 
@@ -34,6 +34,17 @@ request using the IP address to the FQDN because the oauth servers are
 configured to serve requests from pages at the FQDN and will fail
 otherwise. Plus it just looks better in the browser's location bar.
 
+## Web Applications Installation Note
+
+The github repositories for this project and the two WSGI apps were cloned
+into the `/opt/git/` directory.  Symbolic links were then made in the 
+`/var/www/html/tickets/` and `/var/www/html/random-names/` directories.
+
+The tickets app (item catalog) required some tweaking for this project.  In particular,
+the `reset_db.sh` script now drops the `carruth` and `catalog` users and recreates
+them.  Then nessary access is granted to `catalog` so that the wsgi app process, which 
+is owned by `catalog`, can perform its functions appropriately.  The user permissions
+are summarized in the Configuration Summary section below.
 
 ## Installed Packages
 
@@ -335,6 +346,18 @@ Listing...
 ```
 
 
+## License
 
+   Copyright 2017 Al Carruth
 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
+   http://www.apache.org/licenses/LICENSE-2.0
+     
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
