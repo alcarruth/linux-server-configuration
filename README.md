@@ -38,7 +38,8 @@ otherwise. Plus it just looks better in the browser's location bar.
 ## Installed Packages
 
 A number of packages were installed to support this project. In the
-`bin/` directory there is a bash script called `utility_functions.sh`
+`bin/` directory there is a bash script called
+[`utility_functions.sh`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/bin/utility_functions.sh)
 which contains a function called `install_apps()` which automates this
 (so the next time I lock myself out by changing the sshd port and have
 to start over it'll be easier :-)
@@ -67,15 +68,15 @@ The following packages were installed using `pip install`:
  - `Werkzeug (0.11.15)`
 
 
-## Testing the Configuration
+## Configuration Summary
 
 Also in the `bin/` directory there is a bash script called
 [`test_config.sh`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/bin/test_config.sh)
-which is an attempt to check requirements for the project.  It is not exhaustive but I
-found it helpful to check the configuration for my own purposes.  You can execute
-the command yourself but a recent copy of the output (which is in markdown format)
-can be found in
-[`test_config_out.md`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/test_config_out.md)
+which checks requirements for the project. This script checks a number of configuration settings and outputs a summary in markdown format.  I found the script useful to check my progress. 
+You can execute the script yourself from the command line.
+
+View recent copy of the output here: 
+[`test_config_out.md`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/test_config_out.md).
 
 
 ## Users
