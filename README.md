@@ -1,5 +1,83 @@
 # Udacity FSND Project 5 LinuxServer Configuration
 
+## Secure Shell Access for `grader`
+
+You'll be able to login to the server as follows:
+
+`$ ssh -p 2200 -i grader-key.pem grader@34.200.104.130`
+
+where `grader-key.pem` is the key file provided during project submission.
+Also, in order to sudo you'll need a password and I'll provide this as well.
+
+ - host: ec2-34-200-104-130.compute-1.amazonaws.com
+ - ip_addr: 34.200.104.130
+ - ssh port: 2200
+
+## Accessing the Web Application(s)
+
+This project includes two WSGI apps and an index.html "landing page" which
+contains links to each of the WSGI apps.
+
+ - [Tickets-R-Us](https://github.com/alcarruth/fullstack-p3-item-catalog)
+   is the FSND item catalog app.
+ - [Random Name Generator](https://github.com/alcarruth/random-names)
+   is a toy program to demonstrate second WSGI capability.
+
+The landing page can be accessed via either of these two urls:
+
+ - [http://ec2-34-200-104-130.compute-1.amazonaws.com](
+   http://ec2-34-200-104-130.compute-1.amazonaws.com)
+ - [http://34.200.104.130](http://34.200.104.130)
+
+There is a redirect in the apache2 configuration that redirects a
+request using the IP address to the FQDN because the oauth servers are
+configured to serve requests from pages at the FQDN and will fail
+otherwise. Plus it just looks better in the browser's location bar.
+
+
+## Installed Packages
+
+A number of packages were installed to support this project. In the
+`bin/` directory there is a bash script called `utility_functions.sh`
+which contains a function called `install_apps()` which automates this
+(so the next time I lock myself out by changing the sshd port and have
+to start over it'll be easier :-)
+
+The following packages were installed using `apt-get install`:
+ - `Apache 2.4.7 (Ubuntu)`
+ - `apache2-utils`
+ - `libapache2-mod-wsgi`
+ - `git version 1.9.1`
+ - `PostgreSQL 9.3.15`
+ - `GNU Emacs 24.3.1`
+ - `emacs-goodies-el`
+ - `finger`
+ - `python-requests`
+ - `python-psycopg2`
+ - `python-pip 1.5.4`
+
+The following packages were installed using `pip install`:
+ - `dict2xml (1.4)`
+ - `Flask (0.12)`
+ - `Flask-SeaSurf (0.2.2)`
+ - `oauth2client (4.0.0)`
+ - `prettytable (0.7.2)`
+ - `psycopg2 (2.4.5)`
+ - `SQLAlchemy (1.1.5)`
+ - `Werkzeug (0.11.15)`
+
+
+## Testing the Configuration
+
+Also in the `bin/` directory there is a bash script called
+[`test_config.sh`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/bin/test_config.sh)
+which is an attempt to check requirements for the project.  It is not exhaustive but I
+found it helpful to check the configuration for my own purposes.  You can execute
+the command yourself but a recent copy of the output (which is in markdown format)
+can be found in
+[`test_config_out.md`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/test_config_out.md)
+
+
 ## Users
 
 ```
