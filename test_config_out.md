@@ -93,7 +93,7 @@ Listing...
 
 ```
    local   all             postgres                                peer
-   local   all             all                                     peer
+   local   all             all                                     peer map=ticket-app
    host    all             all             127.0.0.1/32            md5
    host    all             all             ::1/128                 md5
 ```
@@ -104,6 +104,8 @@ Listing...
 #### /etc/postgresql/9.5/main/pg_ident.conf:
 
 ```
+   ticket-app      carruth                 carruth
+   ticket-app      catalog                 catalog
 ```
 
 
