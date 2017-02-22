@@ -75,12 +75,13 @@ Also in the `bin/` directory there is a bash script called
 which checks requirements for the project. This script checks a number of configuration settings and outputs a summary in markdown format.  I found the script useful to check my progress. 
 You can execute the script yourself from the command line.
 
-The rest of this README is a copy of the output from `test_config.sh`.
+The rest of this README section is a copy of the output from `test_config.sh`.
+
+
 
 ### User
 
 ```
-   postgres:x:112:117:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
    carruth:x:1001:1001:Al Carruth,,,:/home/carruth:/bin/bash
    grader:x:1002:1002:Udacity Grader,,,:/home/grader:/bin/bash
    catalog:x:1003:1003:Catalog DB User,,,:/home/catalog:/bin/bash
@@ -123,37 +124,33 @@ The rest of this README is a copy of the output from `test_config.sh`.
 ```
    Status: active
    To                         Action      From
-   80                         ALLOW       Anywhere                  
    123                        ALLOW       Anywhere                  
+   80                         ALLOW       Anywhere                  
    2200/tcp                   ALLOW       Anywhere                  
-   80 (v6)                    ALLOW       Anywhere (v6)             
    123 (v6)                   ALLOW       Anywhere (v6)             
+   80 (v6)                    ALLOW       Anywhere (v6)             
    2200/tcp (v6)              ALLOW       Anywhere (v6)             
 ```
 
 
 
 
-#### TODO: Do users have good/secure passwords?
-
-
-
-### Applications up-to-date
-
-
-
-#### apt-get update > /dev/null
-
-
-
-#### apt-get upgrade
+### Application Update Status
 
 ```
-   Reading package lists...
-   Building dependency tree...
-   Reading state information...
-   Calculating upgrade...
-   0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+# apt update && apt list --upgradable
+```
+```
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates InRelease [102 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports InRelease [102 kB]
+Hit:4 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Fetched 204 kB in 0s (858 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
+Listing...
 ```
 
 
@@ -163,16 +160,16 @@ The rest of this README is a copy of the output from `test_config.sh`.
 
 ```
    /etc/hostname: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    HOSTNAME: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    get_public_host(): 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    apache2 ServerName: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
 ```
 
@@ -196,8 +193,8 @@ The rest of this README is a copy of the output from `test_config.sh`.
 #### /etc/postgresql/9.5/main/pg_ident.conf:
 
 ```
-   ticket-app      catalog                 catalog
    ticket-app      carruth                 carruth
+   ticket-app      catalog                 catalog
 ```
 
 
@@ -272,11 +269,11 @@ The rest of this README is a copy of the output from `test_config.sh`.
 
 
 ```
-   <If "%{HTTP_HOST} != 'ec2-34-198-101-230.compute-1.amazonaws.com'">
-       Redirect "/" "http://ec2-34-198-101-230.compute-1.amazonaws.com/"
+   <If "%{HTTP_HOST} != 'ec2-34-200-104-130.compute-1.amazonaws.com'">
+       Redirect "/" "http://ec2-34-200-104-130.compute-1.amazonaws.com/"
    </If>
    <VirtualHost *:80>
-       ServerName ec2-34-198-101-230.compute-1.amazonaws.com
+       ServerName ec2-34-200-104-130.compute-1.amazonaws.com
        ServerAdmin webmaster@localhost
        DocumentRoot /var/www/html
        LogLevel info
@@ -298,14 +295,14 @@ The rest of this README is a copy of the output from `test_config.sh`.
 ```
       WSGIDaemonProcess random-names user=carruth group=carruth threads=1
       WSGIScriptAlias /random-names /var/www/html/random-names/app.wsgi
-      Alias /random-names/static /var/www/html/random-names/static
-      <Location /random-names>
+      Alias /random-names/ /var/www/html/random-names/static/
+      <Location /random-names/>
           ExpiresActive On
           ExpiresByType image/gif A2592000
           ExpiresByType image/jpeg A2592000
           ExpiresByType image/png A2592000
       </Location>
-      <Directory /var/www/html/random-names>
+      <Directory /var/www/html/random-names/static>
           WSGIProcessGroup random-names
           WSGIApplicationGroup %{GLOBAL}
           Order allow,deny
@@ -336,6 +333,8 @@ The rest of this README is a copy of the output from `test_config.sh`.
            Allow from all
        </Directory>
 ```
+
+
 
 
 

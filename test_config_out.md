@@ -59,10 +59,18 @@
 ### Application Update Status
 
 ```
-# sudo apt-get update > /dev/null
-# apt list --upgradable
+# apt update && apt list --upgradable
 ```
 ```
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-updates InRelease [102 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu xenial-backports InRelease [102 kB]
+Hit:4 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Fetched 204 kB in 0s (858 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+All packages are up to date.
 Listing...
 ```
 

@@ -109,11 +109,9 @@ function test_security() {
 function test_applications_up_to_date() {
     section 'Application Update Status'
     printf '```\n'
-    printf '# sudo apt-get update > /dev/null\n'
-    printf '# apt list --upgradable\n'
+    printf '# apt update && apt list --upgradable\n'
     printf '```\n'
-    sudo apt-get update > /dev/null;
-    print_config 'apt list --upgradable 2>/dev/null' '   ';
+    print_config 'apt update 2>/dev/null && apt list --upgradable 2>/dev/null ' '   ';
 }
 
 #-------------------------------------------------------------------------------------------------#
