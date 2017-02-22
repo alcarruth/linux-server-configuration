@@ -58,8 +58,10 @@
 
 ### Application Update Status
 
-`# sudo apt-get update > /dev/null`
-`# apt list --upgradable`
+```
+# sudo apt-get update > /dev/null
+# apt list --upgradable
+```
 ```
 Listing...
 ```
