@@ -36,7 +36,7 @@
    Port 2200
    PermitRootLogin no
    RSAAuthentication yes
-   AllowUsers carruth grader ubuntu
+   AllowUsers carruth grader
 ```
 
 
@@ -56,10 +56,10 @@
 
 
 
-### Applications up-to-date
+### Application Update Status
 
-
-
+`# sudo apt-get update > /dev/null`
+`# apt list --upgradable`
 ```
 Listing...
 ```
