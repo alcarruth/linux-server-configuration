@@ -50,7 +50,7 @@ function psql_command() {
 function test_user_accounts() {
     section User Accounts
     printf '```\n'
-    grep 'grader\|carruth\|catalog\|postgres' /etc/passwd | indent '   '
+    grep 'grader\|carruth\|catalog' /etc/passwd | indent '   '
     printf '```\n'
 }
 
@@ -71,7 +71,7 @@ function test_sudoers() {
     # http://unix.stackexchange.com/questions/227070/why-does-a-z-match-lowercase-letters-in-bash
     LC_COLLATE=C;
     heading "/etc/sudoers.d:"
-    print_config 'cat' "/etc/sudoers.d/[a-z]*" '   '
+    print_config 'cat' "/etc/sudoers.d/90-udacity-project-users" '   '
 }
 
 function test_sshd_config() {
@@ -99,7 +99,7 @@ function test_security() {
     test_sudoers
     test_sshd_config
     test_ufw_status
-    test_passwords
+    #test_passwords
 }
 
 #-------------------------------------------------------------------------------------------------#
@@ -108,10 +108,12 @@ function test_security() {
 
 function test_applications_up_to_date() {
     section 'Applications up-to-date'
-    heading 'apt-get update > /dev/null'
+    #heading 'apt-get update > /dev/null'
+    echo Executing '`sudo apt-get update > /dev/null`'
     sudo apt-get update > /dev/null;
-    heading 'apt-get upgrade'
-    print_config apt-get upgrade '   ';
+    #heading 'apt-get upgrade'
+    echo Executing '`apt list --upgradable`'
+    print_config 'apt list --upgradable 2>/dev/null' '   ';
 }
 
 #-------------------------------------------------------------------------------------------------#

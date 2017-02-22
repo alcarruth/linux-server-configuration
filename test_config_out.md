@@ -3,7 +3,6 @@
 ### User
 
 ```
-   postgres:x:112:117:PostgreSQL administrator,,,:/var/lib/postgresql:/bin/bash
    carruth:x:1001:1001:Al Carruth,,,:/home/carruth:/bin/bash
    grader:x:1002:1002:Udacity Grader,,,:/home/grader:/bin/bash
    catalog:x:1003:1003:Catalog DB User,,,:/home/catalog:/bin/bash
@@ -37,7 +36,7 @@
    Port 2200
    PermitRootLogin no
    RSAAuthentication yes
-   AllowUsers carruth grader
+   AllowUsers carruth grader ubuntu
 ```
 
 
@@ -46,37 +45,23 @@
 ```
    Status: active
    To                         Action      From
-   80                         ALLOW       Anywhere                  
    123                        ALLOW       Anywhere                  
+   80                         ALLOW       Anywhere                  
    2200/tcp                   ALLOW       Anywhere                  
-   80 (v6)                    ALLOW       Anywhere (v6)             
    123 (v6)                   ALLOW       Anywhere (v6)             
+   80 (v6)                    ALLOW       Anywhere (v6)             
    2200/tcp (v6)              ALLOW       Anywhere (v6)             
 ```
 
 
 
 
-#### TODO: Do users have good/secure passwords?
-
-
-
 ### Applications up-to-date
 
-
-
-#### apt-get update > /dev/null
-
-
-
-#### apt-get upgrade
-
+Executing `sudo apt-get update > /dev/null`
+Executing `apt list --upgradable`
 ```
-   Reading package lists...
-   Building dependency tree...
-   Reading state information...
-   Calculating upgrade...
-   0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Listing...
 ```
 
 
@@ -86,16 +71,16 @@
 
 ```
    /etc/hostname: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    HOSTNAME: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    get_public_host(): 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
    apache2 ServerName: 
-   ec2-34-198-101-230.compute-1.amazonaws.com
+   ec2-34-200-104-130.compute-1.amazonaws.com
 
 ```
 
@@ -108,7 +93,7 @@
 
 ```
    local   all             postgres                                peer
-   local   all             all                                     peer map=ticket-app
+   local   all             all                                     peer
    host    all             all             127.0.0.1/32            md5
    host    all             all             ::1/128                 md5
 ```
@@ -119,8 +104,6 @@
 #### /etc/postgresql/9.5/main/pg_ident.conf:
 
 ```
-   ticket-app      catalog                 catalog
-   ticket-app      carruth                 carruth
 ```
 
 
@@ -195,11 +178,11 @@
 
 
 ```
-   <If "%{HTTP_HOST} != 'ec2-34-198-101-230.compute-1.amazonaws.com'">
-       Redirect "/" "http://ec2-34-198-101-230.compute-1.amazonaws.com/"
+   <If "%{HTTP_HOST} != 'ec2-34-200-104-130.compute-1.amazonaws.com'">
+       Redirect "/" "http://ec2-34-200-104-130.compute-1.amazonaws.com/"
    </If>
    <VirtualHost *:80>
-       ServerName ec2-34-198-101-230.compute-1.amazonaws.com
+       ServerName ec2-34-200-104-130.compute-1.amazonaws.com
        ServerAdmin webmaster@localhost
        DocumentRoot /var/www/html
        LogLevel info
@@ -221,14 +204,14 @@
 ```
       WSGIDaemonProcess random-names user=carruth group=carruth threads=1
       WSGIScriptAlias /random-names /var/www/html/random-names/app.wsgi
-      Alias /random-names/static /var/www/html/random-names/static
-      <Location /random-names>
+      Alias /random-names/ /var/www/html/random-names/static/
+      <Location /random-names/>
           ExpiresActive On
           ExpiresByType image/gif A2592000
           ExpiresByType image/jpeg A2592000
           ExpiresByType image/png A2592000
       </Location>
-      <Directory /var/www/html/random-names>
+      <Directory /var/www/html/random-names/static>
           WSGIProcessGroup random-names
           WSGIApplicationGroup %{GLOBAL}
           Order allow,deny
