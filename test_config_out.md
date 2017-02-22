@@ -58,8 +58,8 @@
 
 ### Applications up-to-date
 
-Executing `sudo apt-get update > /dev/null`
-Executing `apt list --upgradable`
+
+
 ```
 Listing...
 ```

@@ -109,10 +109,10 @@ function test_security() {
 function test_applications_up_to_date() {
     section 'Applications up-to-date'
     #heading 'apt-get update > /dev/null'
-    echo Executing '`sudo apt-get update > /dev/null`'
+    printf "`# sudo apt-get update > /dev/null`\n"
     sudo apt-get update > /dev/null;
     #heading 'apt-get upgrade'
-    echo Executing '`apt list --upgradable`'
+    printf "`# apt list --upgradable`\n"
     print_config 'apt list --upgradable 2>/dev/null' '   ';
 }
 
