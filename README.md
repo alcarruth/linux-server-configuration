@@ -18,7 +18,7 @@ Also, in order to sudo you'll need a password and I'll provide this as well.
 This project includes two WSGI apps and an index.html "landing page" which
 contains links to each of the WSGI apps.
 
- - [Tickets-R-Us](https://github.com/alcarruth/fullstack-p3-item-catalog)
+ - [Tickets-R-Us](https://github.com/alcarruth/tickets-r-us)
    is the FSND item catalog app
  - [Random Name Generator](https://github.com/alcarruth/random-names)
    is a toy program to demonstrate second WSGI capability.
@@ -50,7 +50,7 @@ are summarized in the Configuration Summary section below.
 
 A number of packages were installed to support this project. In the
 `bin/` directory there is a bash script called
-[`utility_functions.sh`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/bin/utility_functions.sh)
+[`utility_functions.sh`](https://github.com/alcarruth/linux-server-configuration/blob/submit/bin/utility_functions.sh)
 which contains a function called `install_apps()` which automates this
 (so the next time I lock myself out by changing the sshd port and have
 to start over it'll be easier :-)
@@ -82,7 +82,7 @@ The following packages were installed using `pip install`:
 ## Configuration Summary
 
 Also in the `bin/` directory there is a bash script called
-[`test_config.sh`](https://github.com/alcarruth/fullstack-p5-linux-server-configuration/blob/submit/bin/test_config.sh)
+[`test_config.sh`](https://github.com/alcarruth/linux-server-configuration/blob/submit/bin/test_config.sh)
 which checks requirements for the project. This script checks a number of configuration settings and outputs a summary in markdown format.  I found the script useful to check my progress. 
 You can execute the script yourself from the command line.
 
